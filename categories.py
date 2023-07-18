@@ -11,4 +11,5 @@ class Category(NamedTuple):
     aliases: List[str]
 
 class Categories:
-    def __init__(self)
+    def __init__(self):
+        self._categories = self._load_categories()
