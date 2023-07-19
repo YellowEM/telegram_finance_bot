@@ -2,6 +2,7 @@
 import datetime
 import re
 from categories import Categories
+import db
 import exceptions
 
 class Message(NamedTuple):
