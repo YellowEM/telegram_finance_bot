@@ -17,3 +17,4 @@ def insert(table: str, column_values: Dict):
         f"VALUES ({placeholders})",
         values)
     conn.commit()
+    
