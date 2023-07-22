@@ -7,6 +7,7 @@ conn = sqlite3.connect("finance.db")
 cursor = conn.cursor()
 
 
+
 def insert(table: str, column_values: Dict):
     columns = ', '.join(column_values.keys())
     values = [tuple(column_values.values())]
