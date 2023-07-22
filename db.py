@@ -30,3 +30,5 @@ def fetchall(table: str, columns: List[str]) -> List[Tuple]:
             dict_row[column] = row[index]
         result.append(dict_row)
     return result
+=======
+>>>>>>> origin/dev
