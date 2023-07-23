@@ -1,12 +1,11 @@
 """Сервер бота"""
 import logging
 import os
-#import aiohttp
+import aiohttp
 from aiogram import Bot, Dispatcher, executor, types
 import exceptions
-
-
-
+import expenses
+from categories import Categories
 
 logging.basicConfig(level=logging.INFO)
 
@@ -22,24 +21,26 @@ bot = Bot(token=API_TOKEN, proxy=PROXY_URL, proxy_auth=PROXY_AUTH)
 dp = Dispatcher(bot)
 dp.middleware.setup(AccessMiddleware(ACCESS_ID))
 
+
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
     """Приветственное сообщение + помощь"""
     await message.reply(
-        "Бот для учета финансов\n\n" 
+        "Бот для учета финансов\n\n"
         "Добавить расход: 250 такси\n"
-        "Сегодняшняя статистика: /today\n"
+        "Статистика за сегодня: /today\n"
         "За текущий месяц: /month\n"
         "Последние внесённые расходы: /expenses\n"
         "Категории трат: /categories"
     )
 
 
-
+# @dp.message_handler(lambda message: message.text.startswith('/del'))  # удаление записи
+# async def del_expense(message: types.Message):
+#     row_id = int(message.text[4:])
 
 
 @dp.message_handler()
-"""Добавляется расход"""
 async def add_expense(message: types.Message):
     """Добавляет новый расход"""
     try:
@@ -51,7 +52,6 @@ async def add_expense(message: types.Message):
         f"Добавлены траты {expense.amount} руб на {expense.category_name}.\n\n"
         f"{expenses.get_today_statistics()}")
     await message.answer(answer_message)
-
 
 # #Не пошло через телебота, попробую через айограм
 # import telebot
