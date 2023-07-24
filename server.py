@@ -35,9 +35,12 @@ async def send_welcome(message: types.Message):
     )
 
 
-# @dp.message_handler(lambda message: message.text.startswith('/del'))  # удаление записи
-# async def del_expense(message: types.Message):
-#     row_id = int(message.text[4:])
+@dp.message_handler(lambda message: message.text.startswith('/del'))  # удаление записи
+async def del_expense(message: types.Message):
+    row_id = int(message.text[4:])
+    expenses.delete_expense(row_id)
+    answer_message = "Удалил"
+    await message.answer(answer_message)
 
 
 @dp.message_handler()

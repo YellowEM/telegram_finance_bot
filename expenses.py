@@ -34,6 +34,11 @@ def add_expense(raw_message: str) -> Expense:
                    category_name=category.name)
 
 
+def delete_expense(row_id: int) -> None:
+    """Удаляет сообщение по его идентификатору"""
+    db.delete("expense", row_id)
+
+
 def _parse_message(raw_message: str) -> Message:
     """Парсит вновь введённый текст"""
     regexp_result = re.match(r"([\d]+)(.*)", raw_message)
@@ -47,6 +52,7 @@ def _parse_message(raw_message: str) -> Message:
 def _get_now_formatted() -> str:
     """Возвращает сегодняшнюю дату строкой"""
     return _get_now_datetime().strftime("%Y-%m-%d %H:%M:%S")
+
 
 def _get_now_datetime() -> datetime.datetime:
     """Возвращает сегодняшний datetime с учётом временной зоны Мск."""
