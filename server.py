@@ -7,7 +7,7 @@ import exceptions
 import expenses
 from categories import Categories
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO)  # Включаем логирование, чтобы не пропустить важные сообщения
 
 API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
 # PROXY_URL = os.getenv("TELEGRAM_PROXY_URL")
@@ -17,12 +17,13 @@ API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
 # )
 ACCESS_ID = os.getenv("TELEGRAM_ACCESS_ID")
 
-bot = Bot(token=API_TOKEN, proxy=PROXY_URL, proxy_auth=PROXY_AUTH)
-dp = Dispatcher(bot)
+bot = Bot(token=API_TOKEN, proxy=PROXY_URL, proxy_auth=PROXY_AUTH)  # Объект бота
+dp = Dispatcher(bot)  # Диспетчер, он регистрирует функции-обработчики,
+                      # дополнительно ограничивая перечень вызывающих их событий через фильтры
 dp.middleware.setup(AccessMiddleware(ACCESS_ID))
 
 
-@dp.message_handler(commands=['start', 'help'])
+@dp.message_handler(commands=['start', 'help'])  # Хэндлер - обработчик событий, в данном случае на старт и помощь
 async def send_welcome(message: types.Message):
     """Приветственное сообщение + помощь"""
     await message.reply(
@@ -48,9 +49,23 @@ async def del_expense(message: types.Message):
 async def categories_list(message: types.Message):
     """Отправляет список категорий расходов"""
     categories = Categories().get_all_categories()
-    answer_message = "Категории трат:\n\n* " + ("\n* ".join([c.name+' ('+", ".join(c.aliases)+')' for c in categories]))
+    answer_message = "Категории трат:\n\n* " + (
+        "\n* ".join([c.name + ' (' + ", ".join(c.aliases) + ')' for c in categories]))
     await message.answer(answer_message)
 
+
+@dp.message_handler(commands=['today'])
+async def today_statistics(message: types.Message):
+    """Отправляет сегодняшнюю статистику трат"""
+    answer_message = expenses.get_today_statistics()
+    await message.answer(answer_message)
+
+
+@dp.message_handler(commands=['month'])
+async def month_statistics(message: types.Message):
+    """Отправляет статистику трат текущего месяца"""
+    answer_message = expenses.get_month_statistics()
+    await message.answer(answer_message)
 
 @dp.message_handler()
 async def add_expense(message: types.Message):
