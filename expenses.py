@@ -78,6 +78,20 @@ def get_month_statistics() -> str:
             f"{now.day * _get_budget_limit()} руб.")
 
 
+
+def last() -> List[Expense]:
+    """Возвращает последние несколько расходов"""
+    cursor = db.get_cursor()
+    cursor.execute(
+        "select e.id, e.amount, c.name "
+        "from expense e left join category c "
+        "on c.codename=e.category_codename "
+        "order by created desc limit 10")
+    rows = cursor.fetchall()
+    last_expenses = [Expense(id=row[0], amount=row[1], category_name=row[2]) for row in rows]
+    return last_expenses
+
+
 def delete_expense(row_id: int) -> None:
     """Удаляет сообщение по его идентификатору"""
     db.delete("expense", row_id)

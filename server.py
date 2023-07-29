@@ -19,7 +19,7 @@ ACCESS_ID = os.getenv("TELEGRAM_ACCESS_ID")
 
 bot = Bot(token=API_TOKEN, proxy=PROXY_URL, proxy_auth=PROXY_AUTH)  # Объект бота
 dp = Dispatcher(bot)  # Диспетчер, он регистрирует функции-обработчики,
-                      # дополнительно ограничивая перечень вызывающих их событий через фильтры
+# дополнительно ограничивая перечень вызывающих их событий через фильтры
 dp.middleware.setup(AccessMiddleware(ACCESS_ID))
 
 
@@ -57,15 +57,25 @@ async def categories_list(message: types.Message):
 @dp.message_handler(commands=['today'])
 async def today_statistics(message: types.Message):
     """Отправляет сегодняшнюю статистику трат"""
-    answer_message = expenses.get_today_statistics() #!Сделать в expenses
+    answer_message = expenses.get_today_statistics()
     await message.answer(answer_message)
 
 
 @dp.message_handler(commands=['month'])
 async def month_statistics(message: types.Message):
     """Отправляет статистику трат текущего месяца"""
-    answer_message = expenses.get_month_statistics() #!Сделать в expenses
+    answer_message = expenses.get_month_statistics()
     await message.answer(answer_message)
+
+
+@dp.message_handler(commands=['expenses'])
+async def list_expenses(message: types.Message):
+    """Отправляет последние записи о расходах"""
+    last_expenses = expenses.last()
+    if not last_expenses:
+        await message.answer("Расходы ещё не заведены")
+        return
+
 
 @dp.message_handler()
 async def add_expense(message: types.Message):
