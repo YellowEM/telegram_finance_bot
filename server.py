@@ -96,6 +96,10 @@ async def add_expense(message: types.Message):
         f"{expenses.get_today_statistics()}")
     await message.answer(answer_message)
 
+
+if __name__ == '__main__':
+    executor.start_polling(dp, skip_updates=True)
+
 # #Не пошло через телебота, попробую через айограм
 # import telebot
 #
