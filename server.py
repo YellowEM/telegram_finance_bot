@@ -83,6 +83,7 @@ async def list_expenses(message: types.Message):
     answer_message = "Последние сохранённые траты:\n\n* " + "\n\n* ".join(last_expenses_rows)
     await message.answer(answer_message)
 
+
 @dp.message_handler()
 async def add_expense(message: types.Message):
     """Добавляет новый расход"""

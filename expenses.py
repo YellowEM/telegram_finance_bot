@@ -9,11 +9,13 @@ import pytz
 
 
 class Message(NamedTuple):
+    """Структура распаршенного сообщения о новом расходе"""
     amount: int
-    category_name: str
+    category_text: str
 
 
 class Expense(NamedTuple):
+    """Структура добавленного в БД нового расхода"""
     id: Optional[int]
     amount: int
     category_name: str
@@ -21,8 +23,7 @@ class Expense(NamedTuple):
 
 def add_expense(raw_message: str) -> Expense:
     parsed_message = _parse_message(raw_message)
-    category = Categories().get_category(
-        parsed_message.category_text)
+    category = Categories().get_category(parsed_message.category_text)
     inserted_row_id = db.insert("expense", {
         "amount": parsed_message.amount,
         "created": _get_now_formatted(),
@@ -76,7 +77,6 @@ def get_month_statistics() -> str:
             f"всего — {all_today_expenses} руб.\n"
             f"базовые — {base_today_expenses} руб. из "
             f"{now.day * _get_budget_limit()} руб.")
-
 
 
 def last() -> List[Expense]:
