@@ -8,6 +8,7 @@ import expenses
 from categories import Categories
 from middlewares import AccessMiddleware
 
+
 logging.basicConfig(level=logging.INFO)  # Включаем логирование, чтобы не пропустить важные сообщения
 
 API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
