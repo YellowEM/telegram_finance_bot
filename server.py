@@ -6,6 +6,7 @@ from aiogram import Bot, Dispatcher, executor, types
 import exceptions
 import expenses
 from categories import Categories
+from middlewares import AccessMiddleware
 
 logging.basicConfig(level=logging.INFO)  # Включаем логирование, чтобы не пропустить важные сообщения
 
