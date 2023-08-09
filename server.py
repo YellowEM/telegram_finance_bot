@@ -8,7 +8,6 @@ import expenses
 from categories import Categories
 from middlewares import AccessMiddleware
 
-
 logging.basicConfig(level=logging.INFO)  # Включаем логирование, чтобы не пропустить важные сообщения
 
 API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
@@ -42,7 +41,7 @@ async def send_welcome(message: types.Message):
 async def del_expense(message: types.Message):
     """Удаление записи по идентификатору"""
     row_id = int(message.text[4:])
-    expenses.delete_expense(row_id)
+    expenses.delete_expense(row_id)  # контролер
     answer_message = "Удалил"
     await message.answer(answer_message)
 
@@ -59,14 +58,14 @@ async def categories_list(message: types.Message):
 @dp.message_handler(commands=['today'])
 async def today_statistics(message: types.Message):
     """Отправляет сегодняшнюю статистику трат"""
-    answer_message = expenses.get_today_statistics()
+    answer_message = expenses.get_today_statistics()  # вызов бизнес логики
     await message.answer(answer_message)
 
 
 @dp.message_handler(commands=['month'])
 async def month_statistics(message: types.Message):
     """Отправляет статистику трат текущего месяца"""
-    answer_message = expenses.get_month_statistics()
+    answer_message = expenses.get_month_statistics()  # вызов бизнес логики
     await message.answer(answer_message)
 
 
