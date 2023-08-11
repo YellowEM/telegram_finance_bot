@@ -17,12 +17,13 @@ class Message(NamedTuple):
 class Expense(NamedTuple):
     """Структура добавленного в БД нового расхода"""
     id: Optional[int]
-    amount: int
-    category_name: str
+    amount: int  # сумма
+    category_name: str  # название категории
 
 
 def add_expense(raw_message: str) -> Expense:
-    parsed_message = _parse_message(raw_message)
+    """Добавление расхода"""
+    parsed_message = _parse_message(raw_message)  # нижнее подчеркивание - функция не смотрит наружу, непубличный
     category = Categories().get_category(parsed_message.category_text)
     inserted_row_id = db.insert("expense", {
         "amount": parsed_message.amount,
